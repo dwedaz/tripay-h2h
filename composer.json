@@ -1,0 +1,54 @@
+{
+    "name": "dwedaz/tripay-h2h",
+    "description": "Laravel package for Tripay H2H PPOB API integration",
+    "type": "library",
+    "keywords": [
+        "laravel",
+        "tripay",
+        "ppob",
+        "payment",
+        "pulsa",
+        "tagihan"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dwedaz",
+            "email": "your-email@example.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "laravel/framework": "^10.0|^11.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "phpunit/phpunit": "^10.0",
+        "mockery/mockery": "^1.4.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dwedaz\\TripayH2H\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dwedaz\\TripayH2H\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Dwedaz\\TripayH2H\\Providers\\TripayServiceProvider"
+            ],
+            "aliases": {
+                "Tripay": "Dwedaz\\TripayH2H\\Facades\\Tripay"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
