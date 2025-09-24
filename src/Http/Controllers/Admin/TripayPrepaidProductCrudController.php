@@ -57,6 +57,11 @@ class TripayPrepaidProductCrudController
         $this->crud->setModel(TripayPrepaidProduct::class);
         $this->crud->setRoute(config('backpack.base.route_prefix', 'admin') . '/tripay/prepaid-products');
         $this->crud->setEntityNameStrings('prepaid product', 'prepaid products');
+        
+        // Add eager loading for relationships
+        if (method_exists($this->crud, 'addClause')) {
+            $this->crud->addClause('with', ['operator', 'category']);
+        }
 
         // Disable operations to make it readonly
         if (method_exists($this->crud, 'denyAccess')) {
@@ -104,17 +109,21 @@ class TripayPrepaidProductCrudController
         ]);
 
         $this->crud->addColumn([
-            'name' => 'operator',
+            'name' => 'operator_name',
             'label' => 'Operator',
-            'type' => 'relationship',
-            'attribute' => 'name',
+            'type' => 'closure',
+            'function' => function ($entry) {
+                return $entry->operator ? $entry->operator->name : 'N/A';
+            },
         ]);
 
         $this->crud->addColumn([
-            'name' => 'category',
+            'name' => 'category_name',
             'label' => 'Category',
-            'type' => 'relationship',
-            'attribute' => 'name',
+            'type' => 'closure',
+            'function' => function ($entry) {
+                return $entry->category ? $entry->category->name : 'N/A';
+            },
         ]);
 
         $this->crud->addColumn([
@@ -236,17 +245,21 @@ class TripayPrepaidProductCrudController
         ]);
 
         $this->crud->addColumn([
-            'name' => 'operator',
+            'name' => 'operator_name',
             'label' => 'Operator',
-            'type' => 'relationship',
-            'attribute' => 'name',
+            'type' => 'closure',
+            'function' => function ($entry) {
+                return $entry->operator ? $entry->operator->name : 'N/A';
+            },
         ]);
 
         $this->crud->addColumn([
-            'name' => 'category',
+            'name' => 'category_name',
             'label' => 'Category',
-            'type' => 'relationship',
-            'attribute' => 'name',
+            'type' => 'closure',
+            'function' => function ($entry) {
+                return $entry->category ? $entry->category->name : 'N/A';
+            },
         ]);
 
         $this->crud->addColumn([
