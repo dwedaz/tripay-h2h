@@ -42,7 +42,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Dwedaz\\TripayH2H\\Providers\\TripayServiceProvider"
+                "Dwedaz\\TripayH2H\\Providers\\TripayServiceProvider",
+                "Dwedaz\\TripayH2H\\Providers\\TripayBackpackServiceProvider"
             ],
             "aliases": {
                 "Tripay": "Dwedaz\\TripayH2H\\Facades\\Tripay"

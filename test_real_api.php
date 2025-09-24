@@ -75,6 +75,6 @@ Container::setInstance($container);
 
 // Register the Facade accessor
 Tripay::swap($container->make('tripay'));
-print_r(Tripay::prepaid()->getCategories());
+print_r(Tripay::prepaid()->getOperators(290));
 // Test completed successfully
 echo "\n=== All Tests Completed Successfully ===\n";
