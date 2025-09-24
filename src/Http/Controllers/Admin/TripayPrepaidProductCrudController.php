@@ -57,7 +57,7 @@ class TripayPrepaidProductCrudController extends CrudController
             'label' => 'Operator',
             'type' => 'closure',
             'function' => function($entry) {
-                return $entry->operator ? $entry->operator->name : '-';
+                return ($entry && $entry->operator && isset($entry->operator->name)) ? $entry->operator->name : '-';
             }
         ]);
 
@@ -66,7 +66,7 @@ class TripayPrepaidProductCrudController extends CrudController
             'label' => 'Category',
             'type' => 'closure',
             'function' => function($entry) {
-                return $entry->category ? $entry->category->name : '-';
+                return ($entry && $entry->category && isset($entry->category->name)) ? $entry->category->name : '-';
             }
         ]);
 
@@ -82,22 +82,36 @@ class TripayPrepaidProductCrudController extends CrudController
             'type' => 'text',
         ]);
 
-        // Add filters
-        CRUD::addFilter([
-            'name' => 'operator_id',
-            'type' => 'dropdown',
-            'label' => 'Operator'
-        ], TripayPrepaidOperator::all()->pluck('name', 'id')->toArray(), function($value) {
-            CRUD::addClause('where', 'operator_id', $value);
-        });
+        // Add filters with null checks
+        try {
+            $operators = TripayPrepaidOperator::all();
+            if ($operators && $operators->count() > 0) {
+                CRUD::addFilter([
+                    'name' => 'operator_id',
+                    'type' => 'dropdown',
+                    'label' => 'Operator'
+                ], $operators->pluck('name', 'id')->toArray(), function($value) {
+                    CRUD::addClause('where', 'operator_id', $value);
+                });
+            }
+        } catch (\Exception $e) {
+            // Skip operator filter if there's an error
+        }
 
-        CRUD::addFilter([
-            'name' => 'category_id',
-            'type' => 'dropdown',
-            'label' => 'Category'
-        ], TripayPrepaidCategory::all()->pluck('name', 'id')->toArray(), function($value) {
-            CRUD::addClause('where', 'category_id', $value);
-        });
+        try {
+            $categories = TripayPrepaidCategory::all();
+            if ($categories && $categories->count() > 0) {
+                CRUD::addFilter([
+                    'name' => 'category_id',
+                    'type' => 'dropdown',
+                    'label' => 'Category'
+                ], $categories->pluck('name', 'id')->toArray(), function($value) {
+                    CRUD::addClause('where', 'category_id', $value);
+                });
+            }
+        } catch (\Exception $e) {
+            // Skip category filter if there's an error
+        }
 
         CRUD::addFilter([
             'name' => 'status',
@@ -116,6 +130,9 @@ class TripayPrepaidProductCrudController extends CrudController
      */
     protected function setupShowOperation(): void
     {
+        // Add eager loading for relationships
+        CRUD::addClause('with', ['operator', 'category']);
+
         CRUD::addColumn([
             'name' => 'id',
             'label' => 'ID',
@@ -139,14 +156,15 @@ class TripayPrepaidProductCrudController extends CrudController
             'label' => 'Price',
             'type' => 'closure',
             'function' => function ($entry) {
-                return 'Rp ' . number_format($entry->price ?? 0, 0, ',', '.');
+                $price = ($entry && isset($entry->price)) ? $entry->price : 0;
+                return 'Rp ' . number_format($price, 0, ',', '.');
             },
         ]);
 
         CRUD::addColumn([
             'name' => 'description',
             'label' => 'Description',
-            'type' => 'textarea',
+            'type' => 'text',
         ]);
 
         CRUD::addColumn([
@@ -154,7 +172,7 @@ class TripayPrepaidProductCrudController extends CrudController
             'label' => 'Operator',
             'type' => 'closure',
             'function' => function ($entry) {
-                return $entry->operator ? $entry->operator->name : 'N/A';
+                return ($entry && $entry->operator && isset($entry->operator->name)) ? $entry->operator->name : 'N/A';
             },
         ]);
 
@@ -163,7 +181,7 @@ class TripayPrepaidProductCrudController extends CrudController
             'label' => 'Category',
             'type' => 'closure',
             'function' => function ($entry) {
-                return $entry->category ? $entry->category->name : 'N/A';
+                return ($entry && $entry->category && isset($entry->category->name)) ? $entry->category->name : 'N/A';
             },
         ]);
 
@@ -172,7 +190,8 @@ class TripayPrepaidProductCrudController extends CrudController
             'label' => 'Status',
             'type' => 'closure',
             'function' => function ($entry) {
-                return ($entry->status ?? false) ? 'Available' : 'Unavailable';
+                $status = ($entry && isset($entry->status)) ? $entry->status : false;
+                return $status ? 'Available' : 'Unavailable';
             },
         ]);
 
