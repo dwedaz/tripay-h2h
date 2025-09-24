@@ -89,7 +89,7 @@ class TripayPrepaidProductCrudController
         ]);
 
         $this->crud->addColumn([
-            'name' => 'product_name',
+            'name' => 'name',
             'label' => 'Product Name',
             'type' => 'text',
         ]);
@@ -104,15 +104,17 @@ class TripayPrepaidProductCrudController
         ]);
 
         $this->crud->addColumn([
-            'name' => 'operator_name',
+            'name' => 'operator',
             'label' => 'Operator',
-            'type' => 'text',
+            'type' => 'relationship',
+            'attribute' => 'name',
         ]);
 
         $this->crud->addColumn([
-            'name' => 'category_name',
+            'name' => 'category',
             'label' => 'Category',
-            'type' => 'text',
+            'type' => 'relationship',
+            'attribute' => 'name',
         ]);
 
         $this->crud->addColumn([
@@ -135,19 +137,19 @@ class TripayPrepaidProductCrudController
             $this->crud->addFilter(
                 [
                     'type' => 'dropdown',
-                    'name' => 'operator_name',
+                    'name' => 'operator_id',
                     'label' => 'Operator',
                 ],
                 function () {
                     try {
-                        return TripayPrepaidOperator::pluck('name', 'name')->toArray();
+                        return TripayPrepaidOperator::pluck('name', 'id')->toArray();
                     } catch (\Exception $e) {
                         return [];
                     }
                 },
                 function ($value) {
                     if (method_exists($this->crud, 'addClause')) {
-                        $this->crud->addClause('where', 'operator_name', $value);
+                        $this->crud->addClause('where', 'operator_id', $value);
                     }
                 }
             );
@@ -155,19 +157,19 @@ class TripayPrepaidProductCrudController
             $this->crud->addFilter(
                 [
                     'type' => 'dropdown',
-                    'name' => 'category_name',
+                    'name' => 'category_id',
                     'label' => 'Category',
                 ],
                 function () {
                     try {
-                        return TripayPrepaidCategory::pluck('name', 'name')->toArray();
+                        return TripayPrepaidCategory::pluck('name', 'id')->toArray();
                     } catch (\Exception $e) {
                         return [];
                     }
                 },
                 function ($value) {
                     if (method_exists($this->crud, 'addClause')) {
-                        $this->crud->addClause('where', 'category_name', $value);
+                        $this->crud->addClause('where', 'category_id', $value);
                     }
                 }
             );
@@ -213,7 +215,7 @@ class TripayPrepaidProductCrudController
         ]);
 
         $this->crud->addColumn([
-            'name' => 'product_name',
+            'name' => 'name',
             'label' => 'Product Name',
             'type' => 'text',
         ]);
@@ -234,15 +236,17 @@ class TripayPrepaidProductCrudController
         ]);
 
         $this->crud->addColumn([
-            'name' => 'operator_name',
+            'name' => 'operator',
             'label' => 'Operator',
-            'type' => 'text',
+            'type' => 'relationship',
+            'attribute' => 'name',
         ]);
 
         $this->crud->addColumn([
-            'name' => 'category_name',
+            'name' => 'category',
             'label' => 'Category',
-            'type' => 'text',
+            'type' => 'relationship',
+            'attribute' => 'name',
         ]);
 
         $this->crud->addColumn([
