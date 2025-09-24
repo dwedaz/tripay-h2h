@@ -180,14 +180,33 @@ class TripaySync extends Command
         $bar = $this->output->createProgressBar(count($products));
         $bar->start();
 
+        $skippedCount = 0;
+        $syncedCount = 0;
+
         foreach ($products as $productDto) {
-            TripayPrepaidProduct::createOrUpdateFromDto($productDto);
+            try {
+                TripayPrepaidProduct::createOrUpdateFromDto($productDto);
+                $syncedCount++;
+            } catch (\Illuminate\Database\QueryException $e) {
+                // Check if it's a foreign key constraint violation
+                if (str_contains($e->getMessage(), 'FOREIGN KEY constraint failed') || 
+                    str_contains($e->getMessage(), 'foreign key constraint fails')) {
+                    $this->warn("⚠️  Skipped product ID {$productDto->id} ({$productDto->name}): Missing operator_id {$productDto->operatorId} or category_id {$productDto->categoryId}");
+                    $skippedCount++;
+                } else {
+                    // Re-throw other database exceptions
+                    throw $e;
+                }
+            }
             $bar->advance();
         }
 
         $bar->finish();
         $this->newLine();
-        $this->info("  ✅ Synced " . count($products) . " prepaid products.");
+        $this->info("  ✅ Synced {$syncedCount} prepaid products.");
+        if ($skippedCount > 0) {
+            $this->warn("  ⚠️  Skipped {$skippedCount} products due to missing foreign key references.");
+        }
     }
 
     /**
@@ -249,13 +268,32 @@ class TripaySync extends Command
         $bar = $this->output->createProgressBar(count($products));
         $bar->start();
 
+        $skippedCount = 0;
+        $syncedCount = 0;
+
         foreach ($products as $productDto) {
-            TripayPostpaidProduct::createOrUpdateFromDto($productDto);
+            try {
+                TripayPostpaidProduct::createOrUpdateFromDto($productDto);
+                $syncedCount++;
+            } catch (\Illuminate\Database\QueryException $e) {
+                // Check if it's a foreign key constraint violation
+                if (str_contains($e->getMessage(), 'FOREIGN KEY constraint failed') || 
+                    str_contains($e->getMessage(), 'foreign key constraint fails')) {
+                    $this->warn("⚠️  Skipped product ID {$productDto->id} ({$productDto->name}): Missing operator_id {$productDto->operatorId} or category_id {$productDto->categoryId}");
+                    $skippedCount++;
+                } else {
+                    // Re-throw other database exceptions
+                    throw $e;
+                }
+            }
             $bar->advance();
         }
 
         $bar->finish();
         $this->newLine();
-        $this->info("  ✅ Synced " . count($products) . " postpaid products.");
+        $this->info("  ✅ Synced {$syncedCount} postpaid products.");
+        if ($skippedCount > 0) {
+            $this->warn("  ⚠️  Skipped {$skippedCount} products due to missing foreign key references.");
+        }
     }
 }
