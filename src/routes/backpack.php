@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Tripay\H2H\Http\Controllers\Admin\TripayPrepaidProductCrudController;
-use Tripay\H2H\Http\Controllers\Admin\TripayPostpaidProductCrudController;
+use Dwedaz\TripayH2H\Http\Controllers\Admin\TripayPrepaidProductCrudController;
+use Dwedaz\TripayH2H\Http\Controllers\Admin\TripayPostpaidProductCrudController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +22,7 @@ if (class_exists('Backpack\CRUD\CrudServiceProvider')) {
             (array) config('backpack.base.web_middleware', 'web'),
             (array) config('backpack.base.middleware_key', 'admin')
         ),
-        'namespace' => 'Tripay\H2H\Http\Controllers\Admin',
+        'namespace' => 'Dwedaz\TripayH2H\Http\Controllers\Admin',
     ], function () {
         // Tripay Prepaid Products - Read Only
         Route::get('tripay/prepaid-products', [TripayPrepaidProductCrudController::class, 'index'])
