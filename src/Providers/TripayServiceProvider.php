@@ -102,15 +102,24 @@ class TripayServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Load migrations
+        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+
         // Publish configuration file
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../../config/tripay.php' => config_path('tripay.php'),
             ], 'tripay-config');
 
+            // Publish migrations
+            $this->publishes([
+                __DIR__ . '/../../database/migrations' => database_path('migrations'),
+            ], 'tripay-migrations');
+
             // Publish all files
             $this->publishes([
                 __DIR__ . '/../../config/tripay.php' => config_path('tripay.php'),
+                __DIR__ . '/../../database/migrations' => database_path('migrations'),
             ], 'tripay');
 
             // Register console commands

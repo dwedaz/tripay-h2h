@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Dwedaz\TripayH2H\Console\Commands;
 
 use Dwedaz\TripayH2H\Facades\Tripay;
-use Tripay\Models\TripayPrepaidCategory;
-use Tripay\Models\TripayPrepaidOperator;
-use Tripay\Models\TripayPrepaidProduct;
+use Dwedaz\TripayH2H\Models\TripayPrepaidCategory;
+use Dwedaz\TripayH2H\Models\TripayPrepaidOperator;
+use Dwedaz\TripayH2H\Models\TripayPrepaidProduct;
 use Dwedaz\TripayH2H\Models\TripayPostpaidCategory;
 use Dwedaz\TripayH2H\Models\TripayPostpaidOperator;
 use Dwedaz\TripayH2H\Models\TripayPostpaidProduct;

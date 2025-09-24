@@ -1,6 +1,6 @@
 <?php
 
-namespace Tripay\Models;
+namespace Dwedaz\TripayH2H\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
