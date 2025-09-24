@@ -15,7 +15,7 @@ use Dwedaz\TripayH2H\Http\Controllers\Admin\TripayPostpaidProductCrudController;
 */
 
 // Only register routes if Backpack is installed
-if (class_exists('Backpack\CRUD\CrudServiceProvider')) {
+if (class_exists('Backpack\CRUD\BackpackServiceProvider')) {
     Route::group([
         'prefix' => config('backpack.base.route_prefix', 'admin'),
         'middleware' => array_merge(
