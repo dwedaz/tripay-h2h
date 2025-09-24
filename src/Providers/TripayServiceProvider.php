@@ -105,7 +105,9 @@ class TripayServiceProvider extends ServiceProvider
         // Load migrations
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
 
-        $this->loadRoutesFrom(__DIR__.'/../routes/backpack.php');
+        if (class_exists('Backpack\CRUD\CrudServiceProvider')) {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/backpack.php');
+        }
 
         // Publish configuration file
         if ($this->app->runningInConsole()) {
