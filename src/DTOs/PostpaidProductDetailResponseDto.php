@@ -100,7 +100,7 @@ readonly class PostpaidProductDetailResponseDto
     {
         foreach ($this->data as $product) {
             if ($product->code === $code) {
-                return $product;
+                return $product instanceof PostpaidProductDetailDto ? $product : null;
             }
         }
         return null;
@@ -113,7 +113,7 @@ readonly class PostpaidProductDetailResponseDto
     {
         foreach ($this->data as $product) {
             if ($product->id === $id) {
-                return $product;
+                 return $product instanceof PostpaidProductDetailDto ? $product : null;
             }
         }
         return null;

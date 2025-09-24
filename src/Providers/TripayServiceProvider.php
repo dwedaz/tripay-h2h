@@ -10,6 +10,7 @@ use Dwedaz\TripayH2H\Console\Commands\TripaySync;
 use Dwedaz\TripayH2H\Services\TripayServerService;
 use Dwedaz\TripayH2H\Services\TripayBalanceService;
 use Dwedaz\TripayH2H\Services\TripayPrepaidService;
+use Dwedaz\TripayH2H\Services\TripayPostpaidService;
 use Dwedaz\TripayH2H\Contracts\TripayServerInterface;
 use Dwedaz\TripayH2H\Contracts\TripayBalanceInterface;
 use Dwedaz\TripayH2H\Contracts\TripayPrepaidInterface;
@@ -104,6 +105,8 @@ class TripayServiceProvider extends ServiceProvider
         // Load migrations
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
 
+        $this->loadRoutesFrom(__DIR__.'/../routes/backpack.php');
+
         // Publish configuration file
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -121,6 +124,7 @@ class TripayServiceProvider extends ServiceProvider
                 __DIR__ . '/../../database/migrations' => database_path('migrations'),
             ], 'tripay');
 
+            
             // Register console commands
             $this->commands([
                 TripaySync::class,
