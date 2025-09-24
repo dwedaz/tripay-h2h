@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('tripay_prepaid_categories', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->string('name');
+            $table->string('type');
             $table->string('status');
             $table->timestamps();
             
             // Indexes
             $table->index('status');
             $table->index('name');
+            $table->index('type');
         });
     }
 

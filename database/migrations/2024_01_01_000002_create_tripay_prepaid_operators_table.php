@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('tripay_prepaid_operators', function (Blueprint $table) {
             $table->integer('id')->primary();
+            $table->string('code');
             $table->string('name');
             $table->string('status');
             $table->integer('category_id');
+            $table->string('image')->nullable();
             $table->timestamps();
             
             // Foreign key constraint
@@ -25,6 +27,7 @@ return new class extends Migration
             $table->index('status');
             $table->index('category_id');
             $table->index('name');
+            $table->index('code');
         });
     }
 
