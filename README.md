@@ -53,7 +53,7 @@ Tambahkan environment variables di file `.env`:
 
 ```env
 TRIPAY_API_KEY=your_api_key_here
-TRIPAY_SANDBOX=true
+TRIPAY_MODE=sandbox
 ```
 
 ## Usage
@@ -137,7 +137,7 @@ File konfigurasi `config/tripay.php` menyediakan opsi berikut:
 ```php
 return [
     'api_key' => env('TRIPAY_API_KEY', ''),
-    'is_sandbox' => env('TRIPAY_SANDBOX', true),
+    'is_sandbox' => env('TRIPAY_MODE', 'sandbox') === 'sandbox',
     'base_urls' => [
         'sandbox' => env('TRIPAY_SANDBOX_URL', 'https://tripay.id/api-sandbox/v2'),
         'production' => env('TRIPAY_PRODUCTION_URL', 'https://tripay.id/api/v2'),

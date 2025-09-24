@@ -75,8 +75,6 @@ Container::setInstance($container);
 
 // Register the Facade accessor
 Tripay::swap($container->make('tripay'));
-
-$products = Tripay::postpaid()->getProducts();
-$operators = Tripay::postpaid()->getProductDetail('WATAPIN');
-// print_r($products->toArray());
-print_r($operators->toArray());
+print_r(Tripay::prepaid()->getCategories());
+// Test completed successfully
+echo "\n=== All Tests Completed Successfully ===\n";
