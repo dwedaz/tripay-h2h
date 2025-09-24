@@ -7,10 +7,13 @@ namespace Dwedaz\TripayH2H\Providers;
 use Dwedaz\TripayH2H\Contracts\TripayServerInterface;
 use Dwedaz\TripayH2H\Contracts\TripayBalanceInterface;
 use Dwedaz\TripayH2H\Contracts\TripayPrepaidInterface;
+use Dwedaz\TripayH2H\Contracts\TripayPostpaidInterface;
 use Dwedaz\TripayH2H\Services\TripayServerService;
 use Dwedaz\TripayH2H\Services\TripayBalanceService;
 use Dwedaz\TripayH2H\Services\TripayPrepaidService;
+use Dwedaz\TripayH2H\Services\TripayPostpaidService;
 use Dwedaz\TripayH2H\Services\TripayService;
+use Dwedaz\TripayH2H\Console\Commands\TripaySync;
 use Illuminate\Http\Client\Factory as HttpClientFactory;
 use Illuminate\Support\ServiceProvider;
 
@@ -54,6 +57,15 @@ class TripayServiceProvider extends ServiceProvider
             );
         });
 
+        // Register TripayPostpaidService
+        $this->app->bind(TripayPostpaidInterface::class, function ($app) {
+            return new TripayPostpaidService(
+                httpClient: $app->make(HttpClientFactory::class),
+                apiKey: config('tripay.api_key', ''),
+                isSandbox: config('tripay.is_sandbox', true)
+            );
+        });
+
         // Register singleton for TripayServerService
         $this->app->singleton('tripay.server', function ($app) {
             return $app->make(TripayServerInterface::class);
@@ -69,12 +81,18 @@ class TripayServiceProvider extends ServiceProvider
             return $app->make(TripayPrepaidInterface::class);
         });
 
+        // Register singleton for TripayPostpaidService
+        $this->app->singleton('tripay.postpaid', function ($app) {
+            return $app->make(TripayPostpaidInterface::class);
+        });
+
         // Register main Tripay service
         $this->app->singleton('tripay', function ($app) {
             return new TripayService(
                 $app->make(TripayServerInterface::class),
                 $app->make(TripayBalanceInterface::class),
-                $app->make(TripayPrepaidInterface::class)
+                $app->make(TripayPrepaidInterface::class),
+                $app->make(TripayPostpaidInterface::class)
             );
         });
     }
@@ -90,10 +108,15 @@ class TripayServiceProvider extends ServiceProvider
                 __DIR__ . '/../../config/tripay.php' => config_path('tripay.php'),
             ], 'tripay-config');
 
-            // Publish all package assets
+            // Publish all files
             $this->publishes([
                 __DIR__ . '/../../config/tripay.php' => config_path('tripay.php'),
             ], 'tripay');
+
+            // Register console commands
+            $this->commands([
+                TripaySync::class,
+            ]);
         }
     }
 
@@ -106,9 +129,11 @@ class TripayServiceProvider extends ServiceProvider
             TripayServerInterface::class,
             TripayBalanceInterface::class,
             TripayPrepaidInterface::class,
+            TripayPostpaidInterface::class,
             'tripay.server',
             'tripay.balance',
             'tripay.prepaid',
+            'tripay.postpaid',
             'tripay',
         ];
     }

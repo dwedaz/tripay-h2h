@@ -7,6 +7,7 @@ namespace Dwedaz\TripayH2H\Services;
 use Dwedaz\TripayH2H\Contracts\TripayBalanceInterface;
 use Dwedaz\TripayH2H\Contracts\TripayServerInterface;
 use Dwedaz\TripayH2H\Contracts\TripayPrepaidInterface;
+use Dwedaz\TripayH2H\Contracts\TripayPostpaidInterface;
 use Dwedaz\TripayH2H\DTOs\BalanceResponseDto;
 use Dwedaz\TripayH2H\DTOs\ServerResponseDto;
 use Dwedaz\TripayH2H\DTOs\PrepaidCategoriesResponseDto;
@@ -14,13 +15,15 @@ use Dwedaz\TripayH2H\DTOs\PrepaidOperatorsResponseDto;
 use Dwedaz\TripayH2H\DTOs\PrepaidProductsResponseDto;
 use Dwedaz\TripayH2H\DTOs\PrepaidProductDetailResponseDto;
 use Dwedaz\TripayH2H\Facades\PrepaidFacade;
+use Dwedaz\TripayH2H\Facades\PostpaidFacade;
 
 class TripayService
 {
     public function __construct(
         private readonly TripayServerInterface $serverService,
         private readonly TripayBalanceInterface $balanceService,
-        private readonly TripayPrepaidInterface $prepaidService
+        private readonly TripayPrepaidInterface $prepaidService,
+        private readonly TripayPostpaidInterface $postpaidService
     ) {}
 
     /**
@@ -94,6 +97,13 @@ class TripayService
     {
         return new PrepaidFacade($this->prepaidService);
     }
-    
+
+    /**
+     * Get postpaid facade instance
+     */
+    public function postpaid(): PostpaidFacade
+    {
+        return new PostpaidFacade($this->postpaidService);
+    }
 
 }
