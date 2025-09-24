@@ -55,7 +55,7 @@ class TripayPrepaidProductCrudController
         }
 
         $this->crud->setModel(TripayPrepaidProduct::class);
-        $this->crud->setRoute(config('backpack.base.route_prefix', 'admin') . '/tripay-prepaid-products');
+        $this->crud->setRoute(config('backpack.base.route_prefix', 'admin') . '/tripay/prepaid-products');
         $this->crud->setEntityNameStrings('prepaid product', 'prepaid products');
 
         // Disable operations to make it readonly

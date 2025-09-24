@@ -53,7 +53,7 @@ class TripayPostpaidProductCrudController
         }
 
         $this->crud->setModel(TripayPostpaidProduct::class);
-        $this->crud->setRoute(config('backpack.base.route_prefix', 'admin') . '/tripay-postpaid-products');
+        $this->crud->setRoute(config('backpack.base.route_prefix', 'admin') . '/tripay/postpaid-products');
         $this->crud->setEntityNameStrings('postpaid product', 'postpaid products');
 
         // Disable operations to make it readonly

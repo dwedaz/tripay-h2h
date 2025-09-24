@@ -31,22 +31,22 @@
     },
     "autoload": {
         "psr-4": {
-            "Dwedaz\\TripayH2H\\": "src/"
+            "Tripay\\H2H\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Dwedaz\\TripayH2H\\Tests\\": "tests/"
+            "Tripay\\H2H\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Dwedaz\\TripayH2H\\Providers\\TripayServiceProvider",
-                "Dwedaz\\TripayH2H\\Providers\\TripayBackpackServiceProvider"
+                "Tripay\\H2H\\Providers\\TripayServiceProvider",
+                "Tripay\\H2H\\Providers\\TripayBackpackServiceProvider"
             ],
             "aliases": {
-                "Tripay": "Dwedaz\\TripayH2H\\Facades\\Tripay"
+                "Tripay": "Tripay\\H2H\\Facades\\Tripay"
             }
         }
     },

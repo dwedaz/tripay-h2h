@@ -1,32 +1,39 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Dwedaz\TripayH2H\Http\Controllers\Admin\TripayPrepaidProductCrudController;
-use Dwedaz\TripayH2H\Http\Controllers\Admin\TripayPostpaidProductCrudController;
+use Tripay\H2H\Http\Controllers\Admin\TripayPrepaidProductCrudController;
+use Tripay\H2H\Http\Controllers\Admin\TripayPostpaidProductCrudController;
 
 /*
 |--------------------------------------------------------------------------
-| Tripay H2H Backpack Admin Routes
+| Backpack Routes
 |--------------------------------------------------------------------------
 |
-| Here are the admin routes for Tripay H2H package using Backpack CRUD.
-| These routes provide readonly views for prepaid and postpaid products.
+| This file contains routes for Backpack CRUD controllers.
+| These routes provide read-only access to Tripay products.
 |
 */
 
-Route::group([
-    'prefix' => config('backpack.base.route_prefix', 'admin'),
-    'middleware' => array_merge(
-        (array) config('backpack.base.web_middleware', 'web'),
-        (array) config('backpack.base.middleware_key', 'admin')
-    ),
-    'namespace' => 'Dwedaz\TripayH2H\Http\Controllers\Admin',
-], function () {
-    
-    // Tripay Prepaid Products CRUD routes
-    Route::crud('tripay-prepaid-products', TripayPrepaidProductCrudController::class);
-    
-    // Tripay Postpaid Products CRUD routes  
-    Route::crud('tripay-postpaid-products', TripayPostpaidProductCrudController::class);
-    
-});
+// Only register routes if Backpack is installed
+if (class_exists('Backpack\CRUD\CrudServiceProvider')) {
+    Route::group([
+        'prefix' => config('backpack.base.route_prefix', 'admin'),
+        'middleware' => array_merge(
+            (array) config('backpack.base.web_middleware', 'web'),
+            (array) config('backpack.base.middleware_key', 'admin')
+        ),
+        'namespace' => 'Tripay\H2H\Http\Controllers\Admin',
+    ], function () {
+        // Tripay Prepaid Products - Read Only
+        Route::get('tripay/prepaid-products', [TripayPrepaidProductCrudController::class, 'index'])
+            ->name('tripay.prepaid-products.index');
+        Route::get('tripay/prepaid-products/{id}', [TripayPrepaidProductCrudController::class, 'show'])
+            ->name('tripay.prepaid-products.show');
+
+        // Tripay Postpaid Products - Read Only
+        Route::get('tripay/postpaid-products', [TripayPostpaidProductCrudController::class, 'index'])
+            ->name('tripay.postpaid-products.index');
+        Route::get('tripay/postpaid-products/{id}', [TripayPostpaidProductCrudController::class, 'show'])
+            ->name('tripay.postpaid-products.show');
+    });
+}
