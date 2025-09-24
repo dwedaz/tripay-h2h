@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Dwedaz\TripayH2H\Providers;
+namespace Tripay\H2H\Providers;
 
-use Dwedaz\TripayH2H\Contracts\TripayServerInterface;
-use Dwedaz\TripayH2H\Contracts\TripayBalanceInterface;
-use Dwedaz\TripayH2H\Contracts\TripayPrepaidInterface;
-use Dwedaz\TripayH2H\Contracts\TripayPostpaidInterface;
-use Dwedaz\TripayH2H\Services\TripayServerService;
-use Dwedaz\TripayH2H\Services\TripayBalanceService;
-use Dwedaz\TripayH2H\Services\TripayPrepaidService;
-use Dwedaz\TripayH2H\Services\TripayPostpaidService;
-use Dwedaz\TripayH2H\Services\TripayService;
-use Dwedaz\TripayH2H\Console\Commands\TripaySync;
+use Tripay\H2H\Contracts\TripayServerInterface;
+use Tripay\H2H\Contracts\TripayBalanceInterface;
+use Tripay\H2H\Contracts\TripayPrepaidInterface;
+use Tripay\H2H\Contracts\TripayPostpaidInterface;
+use Tripay\H2H\Services\TripayServerService;
+use Tripay\H2H\Services\TripayBalanceService;
+use Tripay\H2H\Services\TripayPrepaidService;
+use Tripay\H2H\Services\TripayPostpaidService;
+use Tripay\H2H\Services\TripayService;
+use Tripay\H2H\Console\Commands\TripaySync;
 use Illuminate\Http\Client\Factory as HttpClientFactory;
 use Illuminate\Support\ServiceProvider;
 
