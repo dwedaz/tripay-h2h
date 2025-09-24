@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TripayPostpaidProduct extends Model
 {
+    use Backpack\CRUD\app\Models\Traits\CrudTrait;
+    
     protected $table = 'tripay_postpaid_products';
 
     protected $fillable = [

@@ -8,11 +8,12 @@ use Dwedaz\TripayH2H\DTOs\PrepaidCategoryDto;
 
 class TripayPrepaidCategory extends Model
 {
+    use Backpack\CRUD\app\Models\Traits\CrudTrait;
     /**
      * The table associated with the model.
      */
     protected $table = 'tripay_prepaid_categories';
-
+    
     /**
      * The attributes that are mass assignable.
      */
