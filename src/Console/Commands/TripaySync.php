@@ -134,14 +134,31 @@ class TripaySync extends Command
         $bar = $this->output->createProgressBar(count($categories));
         $bar->start();
 
+        $skippedCount = 0;
+        $syncedCount = 0;
+
         foreach ($categories as $categoryDto) {
-            TripayPrepaidCategory::createOrUpdateFromDto($categoryDto);
+            try {
+                TripayPrepaidCategory::createOrUpdateFromDto($categoryDto);
+                $syncedCount++;
+            } catch (\Illuminate\Database\QueryException $e) {
+                if (str_contains($e->getMessage(), 'UNIQUE constraint failed') || 
+                    str_contains($e->getMessage(), 'Duplicate entry')) {
+                    $this->warn("⚠️  Skipped category ID {$categoryDto->id} ({$categoryDto->name}): Duplicate entry");
+                    $skippedCount++;
+                } else {
+                    throw $e;
+                }
+            }
             $bar->advance();
         }
 
         $bar->finish();
         $this->newLine();
-        $this->info("  ✅ Synced " . count($categories) . " prepaid categories.");
+        $this->info("  ✅ Synced {$syncedCount} prepaid categories.");
+        if ($skippedCount > 0) {
+            $this->warn("  ⚠️  Skipped {$skippedCount} categories due to constraint violations.");
+        }
     }
 
     /**
@@ -157,14 +174,35 @@ class TripaySync extends Command
         $bar = $this->output->createProgressBar(count($operators));
         $bar->start();
 
+        $skippedCount = 0;
+        $syncedCount = 0;
+
         foreach ($operators as $operatorDto) {
-            TripayPrepaidOperator::createOrUpdateFromDto($operatorDto);
+            try {
+                TripayPrepaidOperator::createOrUpdateFromDto($operatorDto);
+                $syncedCount++;
+            } catch (\Illuminate\Database\QueryException $e) {
+                if (str_contains($e->getMessage(), 'FOREIGN KEY constraint failed') || 
+                    str_contains($e->getMessage(), 'foreign key constraint fails')) {
+                    $this->warn("⚠️  Skipped operator ID {$operatorDto->id} ({$operatorDto->name}): Missing category_id {$operatorDto->categoryId}");
+                    $skippedCount++;
+                } elseif (str_contains($e->getMessage(), 'UNIQUE constraint failed') || 
+                         str_contains($e->getMessage(), 'Duplicate entry')) {
+                    $this->warn("⚠️  Skipped operator ID {$operatorDto->id} ({$operatorDto->name}): Duplicate entry");
+                    $skippedCount++;
+                } else {
+                    throw $e;
+                }
+            }
             $bar->advance();
         }
 
         $bar->finish();
         $this->newLine();
-        $this->info("  ✅ Synced " . count($operators) . " prepaid operators.");
+        $this->info("  ✅ Synced {$syncedCount} prepaid operators.");
+        if ($skippedCount > 0) {
+            $this->warn("  ⚠️  Skipped {$skippedCount} operators due to constraint violations.");
+        }
     }
 
     /**
@@ -192,6 +230,10 @@ class TripaySync extends Command
                 if (str_contains($e->getMessage(), 'FOREIGN KEY constraint failed') || 
                     str_contains($e->getMessage(), 'foreign key constraint fails')) {
                     $this->warn("⚠️  Skipped product ID {$productDto->id} ({$productDto->name}): Missing operator_id {$productDto->operatorId} or category_id {$productDto->categoryId}");
+                    $skippedCount++;
+                } elseif (str_contains($e->getMessage(), 'UNIQUE constraint failed') || 
+                         str_contains($e->getMessage(), 'Duplicate entry')) {
+                    $this->warn("⚠️  Skipped product ID {$productDto->id} ({$productDto->name}): Duplicate code '{$productDto->code}'");
                     $skippedCount++;
                 } else {
                     // Re-throw other database exceptions
@@ -222,14 +264,31 @@ class TripaySync extends Command
         $bar = $this->output->createProgressBar(count($categories));
         $bar->start();
 
+        $skippedCount = 0;
+        $syncedCount = 0;
+
         foreach ($categories as $categoryDto) {
-            TripayPostpaidCategory::createOrUpdateFromDto($categoryDto);
+            try {
+                TripayPostpaidCategory::createOrUpdateFromDto($categoryDto);
+                $syncedCount++;
+            } catch (\Illuminate\Database\QueryException $e) {
+                if (str_contains($e->getMessage(), 'UNIQUE constraint failed') || 
+                    str_contains($e->getMessage(), 'Duplicate entry')) {
+                    $this->warn("⚠️  Skipped category ID {$categoryDto->id} ({$categoryDto->name}): Duplicate entry");
+                    $skippedCount++;
+                } else {
+                    throw $e;
+                }
+            }
             $bar->advance();
         }
 
         $bar->finish();
         $this->newLine();
-        $this->info("  ✅ Synced " . count($categories) . " postpaid categories.");
+        $this->info("  ✅ Synced {$syncedCount} postpaid categories.");
+        if ($skippedCount > 0) {
+            $this->warn("  ⚠️  Skipped {$skippedCount} categories due to constraint violations.");
+        }
     }
 
     /**
@@ -245,14 +304,35 @@ class TripaySync extends Command
         $bar = $this->output->createProgressBar(count($operators));
         $bar->start();
 
+        $skippedCount = 0;
+        $syncedCount = 0;
+
         foreach ($operators as $operatorDto) {
-            TripayPostpaidOperator::createOrUpdateFromDto($operatorDto);
+            try {
+                TripayPostpaidOperator::createOrUpdateFromDto($operatorDto);
+                $syncedCount++;
+            } catch (\Illuminate\Database\QueryException $e) {
+                if (str_contains($e->getMessage(), 'FOREIGN KEY constraint failed') || 
+                    str_contains($e->getMessage(), 'foreign key constraint fails')) {
+                    $this->warn("⚠️  Skipped operator ID {$operatorDto->id} ({$operatorDto->name}): Missing category_id {$operatorDto->categoryId}");
+                    $skippedCount++;
+                } elseif (str_contains($e->getMessage(), 'UNIQUE constraint failed') || 
+                         str_contains($e->getMessage(), 'Duplicate entry')) {
+                    $this->warn("⚠️  Skipped operator ID {$operatorDto->id} ({$operatorDto->name}): Duplicate entry");
+                    $skippedCount++;
+                } else {
+                    throw $e;
+                }
+            }
             $bar->advance();
         }
 
         $bar->finish();
         $this->newLine();
-        $this->info("  ✅ Synced " . count($operators) . " postpaid operators.");
+        $this->info("  ✅ Synced {$syncedCount} postpaid operators.");
+        if ($skippedCount > 0) {
+            $this->warn("  ⚠️  Skipped {$skippedCount} operators due to constraint violations.");
+        }
     }
 
     /**
@@ -280,6 +360,10 @@ class TripaySync extends Command
                 if (str_contains($e->getMessage(), 'FOREIGN KEY constraint failed') || 
                     str_contains($e->getMessage(), 'foreign key constraint fails')) {
                     $this->warn("⚠️  Skipped product ID {$productDto->id} ({$productDto->name}): Missing operator_id {$productDto->operatorId} or category_id {$productDto->categoryId}");
+                    $skippedCount++;
+                } elseif (str_contains($e->getMessage(), 'UNIQUE constraint failed') || 
+                         str_contains($e->getMessage(), 'Duplicate entry')) {
+                    $this->warn("⚠️  Skipped product ID {$productDto->id} ({$productDto->name}): Duplicate code '{$productDto->code}'");
                     $skippedCount++;
                 } else {
                     // Re-throw other database exceptions
