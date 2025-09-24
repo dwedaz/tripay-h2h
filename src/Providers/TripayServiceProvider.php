@@ -32,7 +32,7 @@ class TripayServiceProvider extends ServiceProvider
             return new TripayServerService(
                 httpClient: $app->make(HttpClientFactory::class),
                 apiKey: config('tripay.api_key', ''),
-                isSandbox: config('tripay.sandbox', true)
+                isSandbox: config('tripay.is_sandbox', true)
             );
         });
 
@@ -41,7 +41,7 @@ class TripayServiceProvider extends ServiceProvider
             return new TripayBalanceService(
                 httpClient: $app->make(HttpClientFactory::class),
                 apiKey: config('tripay.api_key', ''),
-                isSandbox: config('tripay.sandbox', true)
+                isSandbox: config('tripay.is_sandbox', true)
             );
         });
 
@@ -50,7 +50,7 @@ class TripayServiceProvider extends ServiceProvider
             return new TripayPrepaidService(
                 httpClient: $app->make(HttpClientFactory::class),
                 apiKey: config('tripay.api_key', ''),
-                isSandbox: config('tripay.sandbox', true)
+                isSandbox: config('tripay.is_sandbox', true)
             );
         });
 
@@ -69,12 +69,12 @@ class TripayServiceProvider extends ServiceProvider
             return $app->make(TripayPrepaidInterface::class);
         });
 
-        // Register unified TripayService for facade
+        // Register main Tripay service
         $this->app->singleton('tripay', function ($app) {
             return new TripayService(
-                serverService: $app->make(TripayServerInterface::class),
-                balanceService: $app->make(TripayBalanceInterface::class),
-                prepaidService: $app->make(TripayPrepaidInterface::class)
+                $app->make(TripayServerInterface::class),
+                $app->make(TripayBalanceInterface::class),
+                $app->make(TripayPrepaidInterface::class)
             );
         });
     }

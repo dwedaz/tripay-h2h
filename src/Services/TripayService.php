@@ -7,26 +7,20 @@ namespace Dwedaz\TripayH2H\Services;
 use Dwedaz\TripayH2H\Contracts\TripayBalanceInterface;
 use Dwedaz\TripayH2H\Contracts\TripayServerInterface;
 use Dwedaz\TripayH2H\Contracts\TripayPrepaidInterface;
-use Dwedaz\TripayH2H\Contracts\TripayPostpaidInterface;
 use Dwedaz\TripayH2H\DTOs\BalanceResponseDto;
 use Dwedaz\TripayH2H\DTOs\ServerResponseDto;
 use Dwedaz\TripayH2H\DTOs\PrepaidCategoriesResponseDto;
 use Dwedaz\TripayH2H\DTOs\PrepaidOperatorsResponseDto;
 use Dwedaz\TripayH2H\DTOs\PrepaidProductsResponseDto;
 use Dwedaz\TripayH2H\DTOs\PrepaidProductDetailResponseDto;
-use Dwedaz\TripayH2H\DTOs\PostpaidCategoriesResponseDto;
-use Dwedaz\TripayH2H\DTOs\PostpaidOperatorsResponseDto;
-use Dwedaz\TripayH2H\DTOs\PostpaidProductsResponseDto;
 use Dwedaz\TripayH2H\Facades\PrepaidFacade;
-use Dwedaz\TripayH2H\Facades\PostpaidFacade;
 
 class TripayService
 {
     public function __construct(
         private readonly TripayServerInterface $serverService,
         private readonly TripayBalanceInterface $balanceService,
-        private readonly TripayPrepaidInterface $prepaidService,
-        private readonly TripayPostpaidInterface $postpaidService
+        private readonly TripayPrepaidInterface $prepaidService
     ) {}
 
     /**
@@ -101,35 +95,5 @@ class TripayService
         return new PrepaidFacade($this->prepaidService);
     }
     
-    /**
-     * Get postpaid facade instance
-     */
-    public function postpaid(): PostpaidFacade
-    {
-        return new PostpaidFacade($this->postpaidService);
-    }
-    
-    /**
-     * Get postpaid categories (direct method)
-     */
-    public function getPostpaidCategories(?string $categoryId = null): PostpaidCategoriesResponseDto
-    {
-        return $this->postpaidService->getCategories($categoryId);
-    }
-    
-    /**
-     * Get postpaid operators (direct method)
-     */
-    public function getPostpaidOperators(?string $operatorId = null): PostpaidOperatorsResponseDto
-    {
-        return $this->postpaidService->getOperators($operatorId);
-    }
-    
-    /**
-     * Get postpaid products (direct method)
-     */
-    public function getPostpaidProducts(?string $categoryId = null, ?string $operatorId = null): PostpaidProductsResponseDto
-    {
-        return $this->postpaidService->getProducts($categoryId, $operatorId);
-    }
+
 }

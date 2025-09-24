@@ -23,7 +23,7 @@ return [
     |
     */
 
-    'sandbox' => env('TRIPAY_SANDBOX', true),
+    'is_sandbox' => env('TRIPAY_SANDBOX', true),
 
     /*
     |--------------------------------------------------------------------------
