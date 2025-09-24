@@ -24,16 +24,10 @@ if (class_exists('Backpack\CRUD\BackpackServiceProvider')) {
         ),
         'namespace' => 'Dwedaz\TripayH2H\Http\Controllers\Admin',
     ], function () {
-        // Tripay Prepaid Products - Read Only
-        Route::get('tripay/prepaid-products', [TripayPrepaidProductCrudController::class, 'index'])
-            ->name('tripay.prepaid-products.index');
-        Route::get('tripay/prepaid-products/{id}', [TripayPrepaidProductCrudController::class, 'show'])
-            ->name('tripay.prepaid-products.show');
+        // Tripay Prepaid Products - Read Only CRUD
+        Route::crud('tripay/prepaid-products', 'TripayPrepaidProductCrudController');
 
-        // Tripay Postpaid Products - Read Only
-        Route::get('tripay/postpaid-products', [TripayPostpaidProductCrudController::class, 'index'])
-            ->name('tripay.postpaid-products.index');
-        Route::get('tripay/postpaid-products/{id}', [TripayPostpaidProductCrudController::class, 'show'])
-            ->name('tripay.postpaid-products.show');
+        // Tripay Postpaid Products - Read Only CRUD
+        Route::crud('tripay/postpaid-products', 'TripayPostpaidProductCrudController');
     });
 }
