@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TripayPostpaidCategory extends Model
 {
-    use Backpack\CRUD\app\Models\Traits\CrudTrait;
+    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
 
     protected $table = 'tripay_postpaid_categories';
 

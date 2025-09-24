@@ -9,7 +9,7 @@ use Dwedaz\TripayH2H\DTOs\PrepaidOperatorDto;
 
 class TripayPrepaidOperator extends Model
 {
-    use Backpack\CRUD\app\Models\Traits\CrudTrait;
+    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
     /**
      * The table associated with the model.
      */
